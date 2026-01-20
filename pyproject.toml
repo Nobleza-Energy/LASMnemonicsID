@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "lasmnemonicsid"
-version = "0.0.1b"  # ← NEW tag version
+version = "0.0.1c"  # ← NEW tag version
 description = "Well log mnemonic identification using lasio and dlisio to load LAS/DLIS files into DataFrames"
 readme = "README.md"
 authors = [
