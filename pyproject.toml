@@ -20,9 +20,9 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
-    "Topic :: Scientific/Engineering",
-    "Topic :: Scientific/Engineering :: Petroleum",
+    "Topic :: Scientific/Engineering",  # ← Keep only this
 ]
+
 requires-python = ">=3.10"
 dependencies = [
     "numpy>=1.21.0",
