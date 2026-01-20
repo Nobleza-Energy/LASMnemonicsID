@@ -153,6 +153,8 @@ gamma_names = [
     "idgr",
     "gr_stgc",
     "gr_edtc_s",
+    "gradx",
+    "grarfm"
 ]
 
 # For spontanous potential logs
