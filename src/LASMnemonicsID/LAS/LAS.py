@@ -110,7 +110,7 @@ def _read_single_las(las_file_path, verbose):
             return None
             
         df.index = df.index.astype(float)
-        df.dropna(inplace=True)
+#        df.dropna(inplace=True)
         
         # Standardize GR curve
         _standardize_gr_curve(las_data, df)
