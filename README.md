@@ -1,7 +1,7 @@
 
 # <img src="logo.png" height="50" valign="bottom"> LASMnemonicsID
 
-LASMnemonicsID uses Python dictionaries with lasio and dlisio to read LAS and DLIS/LIS well log files into pandas DataFrames for mnemonic identification and analysis.[web:54][web:61]
+LASMnemonicsID uses Python dictionaries with lasio and dlisio to read LAS and DLIS/LIS well log files into pandas DataFrames for mnemonic identification and analysis.
 
 ## Features
 
