@@ -60,7 +60,6 @@ namespaces = false
 "" = "src"
 
 [tool.pytest.ini_options]
-addopts = "-v --timeout=60 --strict-markers"
 testpaths = ["tests"]
 python_files = "test_*.py"
 python_classes = "Test*"
