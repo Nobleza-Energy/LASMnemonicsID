@@ -1,36 +1,21 @@
 
 import pytest
-import lasio
 import pandas as pd
 from pathlib import Path
 from LASMnemonicsID.LAS import parseLAS
 
-def test_parseLAS_single_file(single_las_path):
-    result = parseLAS(single_las_path.parent, verbose=False)
-    assert isinstance(result, pd.DataFrame)
-    assert not result.empty
-    assert len(result) > 0
-    assert 'GR' in result.columns or any('GR' in col for col in result.columns)
+def test_parseLAS_single_folder(sample_las_paths):
+    result = parseLAS(sample_las_paths[0].parent, verbose=False)  # tests/data/
+    assert isinstance(result, dict)  # Multiple files → {folder: {well: df}}
+    assert len(result) == 1  # 1 folder: 'data'
+    data_folder = next(iter(result))
+    assert data_folder == 'data'
+    wells = result[data_folder]
+    assert len(wells) >= 5  # Your 5 LAS files
+    first_df = next(iter(wells.values()))
+    assert isinstance(first_df, pd.DataFrame)
+    assert 'GR' in first_df.columns  # GR standardization
 
-def test_parseLAS_multiple_files(sample_las_paths):
-    result = parseLAS(sample_las_paths[0].parent, verbose=False)
-    assert isinstance(result, dict)
-    assert len(result) > 0
-    first_folder = next(iter(result))
-    assert isinstance(result[first_folder], dict)
-    first_well = next(iter(result[first_folder]))
-    df = result[first_folder][first_well]
-    assert isinstance(df, pd.DataFrame)
-    assert not df.empty
-
-def test_no_files():
-    from tempfile import mkdtemp
-    import shutil
-    temp_dir = Path(mkdtemp())
-    result = parseLAS(temp_dir, verbose=False)
+def test_parseLAS_empty_dir():
+    result = parseLAS(Path(__file__).parent / 'empty_dir', verbose=False)
     assert result == {}
-    shutil.rmtree(temp_dir)
-
-def test_las_read_errors(single_las_path):
-    # Test error handling (create invalid LAS for full coverage)
-    pass

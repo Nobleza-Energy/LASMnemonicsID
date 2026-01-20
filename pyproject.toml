@@ -55,3 +55,7 @@ include = ["LASMnemonicsID*"]
 
 [tool.setuptools.package-dir]
 "" = "src"
+
+[tool.pytest.ini_options]
+addopts = "--timeout=30 -v"
+
