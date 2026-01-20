@@ -27,7 +27,7 @@ dependencies = [
     "numpy>=1.21.0",
     "pandas>=2.0.1",
     "lasio>=0.30",
-    "dlisio>=2024.1.0",
+    "dlisio>=1.0.0",
 ]
 
 [project.optional-dependencies]
