@@ -1,9 +1,10 @@
+
 [build-system]
-requires = ["setuptools>=61.0", "wheel"]
+requires = ["setuptools>=61.0", "wheel", "build"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "LASMnemonicsID"
+name = "lasmnemonicsid"  # <-- lowercase, no caps for PyPI
 version = "0.1.0"
 description = "Well log mnemonic identification using lasio and dlisio to load LAS/DLIS files into DataFrames"
 readme = "README.md"
@@ -21,6 +22,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Petroleum",
 ]
 requires-python = ">=3.10"
 dependencies = [
@@ -41,10 +43,11 @@ dev = [
     "black>=23.0.0",
     "isort>=5.12.0",
     "flake8>=6.0.0",
+    "pytest-cov>=4.0.0",
 ]
 
 [project.urls]
-Homepage = "https://github.com/Nobleza-Energy/LASMnemonicsID"
+Homepage = "https://nobleza-energy.github.io/LASMnemonicsID"
 Repository = "https://github.com/Nobleza-Energy/LASMnemonicsID"
 Documentation = "https://nobleza-energy.github.io/LASMnemonicsID/"
 "Bug Tracker" = "https://github.com/Nobleza-Energy/LASMnemonicsID/issues"
@@ -52,10 +55,14 @@ Documentation = "https://nobleza-energy.github.io/LASMnemonicsID/"
 [tool.setuptools.packages.find]
 where = ["src"]
 include = ["LASMnemonicsID*"]
+namespaces = false
 
 [tool.setuptools.package-dir]
 "" = "src"
 
 [tool.pytest.ini_options]
-addopts = "--timeout=30 -v"
-
+addopts = "-v --timeout=60 --strict-markers"
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
