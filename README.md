@@ -1,6 +1,10 @@
-<p align="center">
-  <img src="logo.png" alt="LASMnemonicsID" style="max-width: 300px; height: auto;">
-</p>
+
+# LASMnemonicsID
+
+![logo](logo.png)
+
+LASMnemonicsID uses Python dictionaries with lasio and dlisio to read LAS/DLIS well logs into pandas DataFrames for petrophysics analysis.
+
 
 # LASMnemonicsID
 
