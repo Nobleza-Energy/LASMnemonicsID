@@ -1,6 +1,5 @@
-
 <p align="center">
-  <img src="logo.png" width="200" height="100" alt="LASMnemonicsID Logo">
+  <img src="logo.png" alt="LASMnemonicsID" style="max-width: 300px; height: auto;">
 </p>
 
 # LASMnemonicsID
