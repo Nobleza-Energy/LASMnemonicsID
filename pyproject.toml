@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "lasmnemonicsid"  # <-- lowercase, no caps for PyPI
-version = "0.1.0"
+version = "0.0.1a"
 description = "Well log mnemonic identification using lasio and dlisio to load LAS/DLIS files into DataFrames"
 readme = "README.md"
 authors = [
