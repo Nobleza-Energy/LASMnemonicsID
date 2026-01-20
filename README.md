@@ -1,18 +1,45 @@
 
-![Logo](https://raw.githubusercontent.com/Nobleza-Energy/LASMnemonicsID/main/docs/assets/logo.png)
-LASMnemonicsID uses Python dictionaries with lasio and dlisio to read LAS and DLIS/LIS well log files into pandas DataFrames for mnemonic identification and analysis.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Nobleza-Energy/LASMnemonicsID/main/logo.png" alt="LASMnemonicsID" width="400"/>
+</p>
 
-## Features
+<h1 align="center">LASMnemonicsID</h1>
 
-- LAS 1.2/2.0 → DataFrame (lasio)
-- DLIS/LIS → DataFrame (dlisio)
-- Standardized mnemonic identification via dictionaries
+<p align="center">
+  <b>Well log mnemonic identification using lasio and dlisio</b>
+</p>
 
-## Installation
+<p align="center">
+  <a href="https://pypi.org/project/lasmnemonicsid/"><img src="https://img.shields.io/pypi/v/lasmnemonicsid.svg" alt="PyPI"></a>
+  <a href="https://pypi.org/project/lasmnemonicsid/"><img src="https://img.shields.io/pypi/pyversions/lasmnemonicsid.svg" alt="Python Versions"></a>
+  <a href="https://github.com/Nobleza-Energy/LASMnemonicsID/blob/main/LICENSE"><img src="https://img.shields.io/github/license/Nobleza-Energy/LASMnemonicsID.svg" alt="License"></a>
+</p>
+
+---
+
+## 📦 Installation
 
 ```bash
-pip install -r requirements.txt
+pip install lasmnemonicsid
 ```
 
 
 
+## 🚀 QuickStart
+```
+from LASMnemonicsID.LAS import parseLAS
+
+# Load LAS file
+df = parseLAS("your_well.las")
+print(df.head())
+```
+
+## 🧪 Test with your Data
+```
+from LASMnemonicsID.LAS import parseLAS
+
+# Load and inspect
+df = parseLAS("path/to/well.las")
+print(f"✅ {len(df)} rows, {len(df.columns)} curves")
+print(df.columns.tolist())
+```
