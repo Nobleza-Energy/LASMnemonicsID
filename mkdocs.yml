@@ -1,0 +1,62 @@
+site_name: LASMnemonicsID
+site_url: https://nobleza-energy.github.io/LASMnemonicsID/
+dev_addr: '127.0.0.1:8000'
+watch:
+  - src
+
+nav:
+    - Home: index.md
+    - Load Data: load_data.md
+    - Mnemonic ID: mnemonics_id.md
+    - LAS/DLIS: las_dlis.md
+    - DataFrames: dataframes.md
+    - Utilities: utils.md
+
+repo_name: LASMnemonicsID
+repo_url: https://github.com/Nobleza-Energy/LASMnemonicsID.git
+edit_uri: edit/main/docs/
+
+theme: 
+  name: material
+  palette:
+    primary: black
+    accent: orange
+  font: 
+    text: Nunito Sans
+  icon:
+    repo: fontawesome/brands/github
+  logo: logo.png
+  favicon: logo.png
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.sections
+    - content.action.edit
+    - content.action.view
+
+plugins:
+  - search
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          paths: [src]
+          options:
+            show_source: true
+            docstring_style: google
+            show_root_heading: true
+            show_root_toc_entry: true
+            heading_level: 2
+
+markdown_extensions:
+  - admonition
+  - codehilite
+  - pymdownx.superfences
+  - pymdownx.tabbed
+  - pymdownx.details
+
+extra:
+  social:
+    - icon: material/email
+      link: mailto:info@nobleza-energy.com
+  author: Nobleza Energy

@@ -1,11 +1,10 @@
-
 [build-system]
 requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "LASMnemonicsID"
-version = "0.0.1"
+version = "0.1.0"
 description = "Well log mnemonic identification using lasio and dlisio to load LAS/DLIS files into DataFrames"
 readme = "README.md"
 authors = [
@@ -47,6 +46,7 @@ dev = [
 [project.urls]
 Homepage = "https://github.com/Nobleza-Energy/LASMnemonicsID"
 Repository = "https://github.com/Nobleza-Energy/LASMnemonicsID"
+Documentation = "https://nobleza-energy.github.io/LASMnemonicsID/"
 "Bug Tracker" = "https://github.com/Nobleza-Energy/LASMnemonicsID/issues"
 
 [tool.setuptools.packages.find]
