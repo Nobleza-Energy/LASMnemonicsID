@@ -1,5 +1,5 @@
 
-![LASMnemonicsID](logo.png){width=200 height=100}
+![LASMnemonicsID](logo.png){width=50 height=25}
 
 # LASMnemonicsID
 
