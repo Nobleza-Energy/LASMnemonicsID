@@ -1,6 +1,6 @@
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Nobleza-Energy/LASMnemonicsID/main/logo.png" alt="LASMnemonicsID" width="400"/>
+  <img src="https://raw.githubusercontent.com/Nobleza-Energy/LASMnemonicsID/main/logo.png" alt="LASMnemonicsID Logo" width="600"/>
 </p>
 
 <h1 align="center">LASMnemonicsID</h1>
