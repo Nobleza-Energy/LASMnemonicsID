@@ -1,6 +1,5 @@
 
-# <img src="logo.png" height="50" valign="bottom"> LASMnemonicsID
-
+![Logo](https://raw.githubusercontent.com/Nobleza-Energy/LASMnemonicsID/main/docs/assets/logo.png)
 LASMnemonicsID uses Python dictionaries with lasio and dlisio to read LAS and DLIS/LIS well log files into pandas DataFrames for mnemonic identification and analysis.
 
 ## Features
