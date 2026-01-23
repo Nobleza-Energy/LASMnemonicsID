@@ -46,3 +46,24 @@ print(df.columns.tolist())
 ## 📈 Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=Nobleza-Energy/LASMnemonicsID&type=Date)](https://star-history.com/#Nobleza-Energy/LASMnemonicsID&Date)
+
+
+## 📄 How to Cite
+
+If you use `LASMnemonicsID` in your research or project, please cite it as follows:
+
+**APA**
+
+> Nobleza Energy. (2025). LASMnemonicsID: Well log mnemonic identification using lasio and dlisio [Software]. GitHub. https://github.com/Nobleza-Energy/LASMnemonicsID
+
+**BibTeX**
+
+```bibtex
+@software{LASMnemonicsID,
+  author = {Nobleza Energy},
+  title = {LASMnemonicsID: Well log mnemonic identification using lasio and dlisio},
+  year = {2025},
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  url = {https://github.com/Nobleza-Energy/LASMnemonicsID}
+}
