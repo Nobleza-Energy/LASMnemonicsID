@@ -1,4 +1,3 @@
-
 <p align="center">
   <img src="https://raw.githubusercontent.com/Nobleza-Energy/LASMnemonicsID/main/logo.png" alt="LASMnemonicsID Logo" width="200"/>
 </p>
@@ -23,10 +22,9 @@
 pip install lasmnemonicsid
 ```
 
-
-
 ## 🚀 QuickStart
-```
+
+```python
 from LASMnemonicsID.LAS import parseLAS
 
 # Load LAS file
@@ -35,7 +33,8 @@ print(df.head())
 ```
 
 ## 🧪 Test with your Data
-```
+
+```python
 from LASMnemonicsID.LAS import parseLAS
 
 # Load and inspect
@@ -44,5 +43,6 @@ print(f"✅ {len(df)} rows, {len(df.columns)} curves")
 print(df.columns.tolist())
 ```
 
+## 📈 Star History
 
-![Activity Trends of pingcap/tidb - Last 28 days](https://next.ossinsight.io/widgets/official/compose-activity-trends/thumbnail.png?repo_id=254008261&image_size=auto&color_scheme=light)
+[![Star History Chart](https://api.star-history.com/svg?repos=Nobleza-Energy/LASMnemonicsID&type=Date)](https://star-history.com/#Nobleza-Energy/LASMnemonicsID&Date)
