@@ -45,4 +45,4 @@ print(df.columns.tolist())
 ```
 
 
-[![Activity Trends of pingcap/tidb - Last 28 days](https://next.ossinsight.io/widgets/official/compose-activity-trends/thumbnail.png?repo_id=254008261&image_size=auto&color_scheme=light)](https://next.ossinsight.io/widgets/official/compose-activity-trends?repo_id=254008261)
+![Activity Trends of pingcap/tidb - Last 28 days](https://next.ossinsight.io/widgets/official/compose-activity-trends/thumbnail.png?repo_id=254008261&image_size=auto&color_scheme=light)
