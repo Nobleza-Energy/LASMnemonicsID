@@ -32,15 +32,18 @@ df = parseLAS("your_well.las")
 print(df.head())
 ```
 
-## 🧪 Test with your Data
+## 🧪 Test with your Data: Multiple files will load into a dictionary 
 
 ```python
 from LASMnemonicsID.LAS import parseLAS
 
-# Load and inspect
-df = parseLAS("path/to/well.las")
-print(f"✅ {len(df)} rows, {len(df.columns)} curves")
-print(df.columns.tolist())
+# Load all .las within the Directory → {filename: df}
+data = parseLAS("/path/to/your/data/")
+print("Files:", list(data.keys()))
+
+# Dataframes
+df = parseLAS('/path/to/yourfile.las')
+print(df.head())
 ```
 
 ## 📈 Star History

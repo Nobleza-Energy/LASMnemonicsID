@@ -59,44 +59,82 @@ def create_mnemonic_dict(
 
 
 
-def parseLAS(directory_path, verbose=True):
+#def parseLAS(directory_path, verbose=True):
+#    """
+#    Parse all LAS files in directory (recursive) into dict of DataFrames or single DataFrame.
+#    
+#    Args:
+#        directory_path (str/Path): Directory containing LAS files
+#        verbose (bool): Print processing info
+#        
+#    Returns:
+#        dict or DataFrame: {folder: {well: df}} or single df if one file found
+#    """
+#    directory_path = Path(directory_path)
+#    well_logs = {}
+#    
+#    # Find all LAS files recursively
+#    las_files = list(directory_path.rglob("*.las"))
+#    
+#    if not las_files:
+#        if verbose:
+#            print("No LAS files found.")
+#        return {}
+#    
+#    if len(las_files) == 1:
+#        # Return single DataFrame if only one file
+#        return _read_single_las(las_files[0], verbose)
+#    
+#    # Multiple files: group by parent folder
+#    for las_file in las_files:
+#        folder_name = las_file.parent.name
+#        if folder_name not in well_logs:
+#            well_logs[folder_name] = {}
+#        
+#        df = _read_single_las(las_file, verbose)
+#        if df is not None:
+#            well_name = _get_well_name(las_file)
+#            well_logs[folder_name][well_name] = df
+#    
+#    return well_logs
+
+
+def parseLAS(input_path, verbose=True):
     """
-    Parse all LAS files in directory (recursive) into dict of DataFrames or single DataFrame.
+    Parse LAS file or all in directory → DataFrame or {filename: df}.
     
     Args:
-        directory_path (str/Path): Directory containing LAS files
-        verbose (bool): Print processing info
+        input_path (str/Path): LAS file or directory
+        verbose (bool): Print info
         
     Returns:
-        dict or DataFrame: {folder: {well: df}} or single df if one file found
+        DataFrame (single) or dict {filename: df} (multiple/dir)
     """
-    directory_path = Path(directory_path)
-    well_logs = {}
+    input_path = Path(input_path)
     
-    # Find all LAS files recursively
-    las_files = list(directory_path.rglob("*.las"))
+    if input_path.is_file() and input_path.suffix.lower() == '.las':
+        df = _read_single_las(input_path, verbose)
+        return df if df is not None else None
     
+    # Directory: all LAS → {filename: df}
+    las_files = list(input_path.rglob("*.las"))
     if not las_files:
         if verbose:
-            print("No LAS files found.")
+            print("No LAS files.")
         return {}
     
-    if len(las_files) == 1:
-        # Return single DataFrame if only one file
-        return _read_single_las(las_files[0], verbose)
-    
-    # Multiple files: group by parent folder
+    las_dict = {}
     for las_file in las_files:
-        folder_name = las_file.parent.name
-        if folder_name not in well_logs:
-            well_logs[folder_name] = {}
-        
         df = _read_single_las(las_file, verbose)
         if df is not None:
-            well_name = _get_well_name(las_file)
-            well_logs[folder_name][well_name] = df
+            filename = las_file.name  # Key by filename
+            las_dict[filename] = df
     
-    return well_logs
+    if len(las_dict) == 1:
+        return next(iter(las_dict.values()))  # Single → DF
+    return las_dict
+
+
 
 
 def _read_single_las(las_file_path, verbose):
