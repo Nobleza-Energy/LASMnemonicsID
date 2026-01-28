@@ -39,13 +39,13 @@ print(df.head())
 # define path of directory containing .las files, if multiple
 dir = "/home/path/dir/"
 
-# Parse all LAS files in a directory
+# Parse all LAS files in a directory to be stored as dataframes within the data dictionary
 data = parseLAS(dir, preferred_names=preferred)
 
-# List all files, as they are stored as the dictionary keys
+# List all files names, as they are stored as the dictionary keys
 print("Files:", list(data.keys()))
 
-# Access a specific file's DataFrame
+# Access a specific file's DataFrame head
 for fname, df in data.items():
     print(f"\n{fname}:")
     print(df.columns.tolist())
