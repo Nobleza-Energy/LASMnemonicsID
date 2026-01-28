@@ -5,7 +5,7 @@
 <h1 align="center">LASMnemonicsID©</h1>
 
 <p align="center">
-  <b>Well log mnemonic identification using lasio and dlisio</b>
+  <b>Well log mnemonic identification using lasio, dlisio, pandas and custom oil and gas mnemonics for triple combo</b>
 </p>
 
 <p align="center">
