@@ -45,7 +45,7 @@ for fname, df in data.items():
 # define the path where your .las file is
 path = 'path to file/file.las'
 
-#you can optionally used preferred names for the standard mnemonic match, in this case AT90 if present will be renamed as the deepres standard name
+# you can optionally use preferred names for the standard mnemonic automatic match, in this case AT90, if present, will be renamed as the deep resistivity standard curve name "RT" (column name of the dataframe)
 preferred = {
     "deepres_preferred_original": "AT90",
     "gamma": "GR"
