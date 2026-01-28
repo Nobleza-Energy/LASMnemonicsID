@@ -2,7 +2,7 @@
   <img src="https://raw.githubusercontent.com/Nobleza-Energy/LASMnemonicsID/main/logo.png" alt="LASMnemonicsID Logo" width="200"/>
 </p>
 
-<h1 align="center">LASMnemonicsID</h1>
+<h1 align="center">LASMnemonicsID©</h1>
 
 <p align="center">
   <b>Well log mnemonic identification using lasio and dlisio</b>
