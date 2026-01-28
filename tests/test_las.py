@@ -11,9 +11,10 @@ from LASMnemonicsID.utils.mnemonics import (
 from LASMnemonicsID.utils.mnemonics import find_column
 
 
-def test_parseLAS_single_folder(sample_las_paths):
+def test_parseLAS_single_folder():
     """Test directory → {filename: df} dict."""
-    result = parseLAS(sample_las_paths[0].parent, verbose=False)
+    data_dir = Path(__file__).parent / 'data'
+    result = parseLAS(data_dir, verbose=False)
     assert isinstance(result, dict)
     assert len(result) >= 1  # Adaptive: any # files
     first_df = next(iter(result.values()))
@@ -32,6 +33,8 @@ def test_parseLAS_empty_dir():
 
 def test_parseLAS_single_file():
     """Test single file → DataFrame."""
+    data_dir = Path(__file__).parent / 'data'
+    sample_las_paths = list(data_dir.glob('*.las'))
     first_file = sample_las_paths[0]
     df = parseLAS(first_file, verbose=False)
     assert isinstance(df, pd.DataFrame)
