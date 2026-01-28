@@ -33,4 +33,7 @@ def test_parseLAS_empty_dir():
 def test_parseLAS_single_file():
     """Test single file → DataFrame."""
     first_file = sample_las_paths[0]
-    df = parseLAS(first_file,
+    df = parseLAS(first_file, verbose=False)
+    assert isinstance(df, pd.DataFrame)
+    assert len(df) > 0
+    assert 'GR' in df.columns  # Standardization ✓
