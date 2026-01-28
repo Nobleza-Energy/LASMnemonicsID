@@ -20,11 +20,7 @@ from os.path import join
 from sys import stdout
 from pathlib import Path
 
-
-
-
-
-# Function that create the mnemonic dictionary
+# Function that creates the mnemonic dictionary
 def create_mnemonic_dict(
     gamma_names,
     sp_names,
@@ -39,9 +35,8 @@ def create_mnemonic_dict(
     pe_names,
 ):
     """
-    Function that create the mnemonic dictionary with the mnemonics per log type in the utils module
+    Function that creates the mnemonic dictionary with the mnemonics per log type.
     """
-
     mnemonic_dict = {
         "gamma": gamma_names,
         "sp": sp_names,
@@ -57,101 +52,82 @@ def create_mnemonic_dict(
     }
     return mnemonic_dict
 
-
-
-#def parseLAS(directory_path, verbose=True):
-#    """
-#    Parse all LAS files in directory (recursive) into dict of DataFrames or single DataFrame.
-#    
-#    Args:
-#        directory_path (str/Path): Directory containing LAS files
-#        verbose (bool): Print processing info
-#        
-#    Returns:
-#        dict or DataFrame: {folder: {well: df}} or single df if one file found
-#    """
-#    directory_path = Path(directory_path)
-#    well_logs = {}
-#    
-#    # Find all LAS files recursively
-#    las_files = list(directory_path.rglob("*.las"))
-#    
-#    if not las_files:
-#        if verbose:
-#            print("No LAS files found.")
-#        return {}
-#    
-#    if len(las_files) == 1:
-#        # Return single DataFrame if only one file
-#        return _read_single_las(las_files[0], verbose)
-#    
-#    # Multiple files: group by parent folder
-#    for las_file in las_files:
-#        folder_name = las_file.parent.name
-#        if folder_name not in well_logs:
-#            well_logs[folder_name] = {}
-#        
-#        df = _read_single_las(las_file, verbose)
-#        if df is not None:
-#            well_name = _get_well_name(las_file)
-#            well_logs[folder_name][well_name] = df
-#    
-#    return well_logs
-
-
-def parseLAS(input_path, verbose=True):
+def parseLAS(input_path, verbose=True, preferred_names=None):
     """
     Parse LAS file or all in directory → DataFrame or {filename: df}.
     
     Args:
         input_path (str/Path): LAS file or directory
         verbose (bool): Print info
+        preferred_names (dict, optional): Mapping of curve types to preferred column names and preferred original columns.
+            Example: {"deepres": "RT", "deepres_preferred_original": "AT90", "gamma": "GR"}
+            If not provided, defaults to standard petrophysical names.
         
     Returns:
         DataFrame (single) or dict {filename: df} (multiple/dir)
     """
     input_path = Path(input_path)
     
+    # Define default standard names
+    std_names = {
+        "gamma": "GR",
+        "sp": "SP",
+        "caliper": "CALI",
+        "deepres": "RT",
+        "rxo": "RXO",
+        "density": "RHOB",
+        "density_correction": "DRHO",
+        "neutron": "NPHI",
+        "dtc": "DT",
+        "dts": "DTS",
+        "pe": "PEF"
+    }
+    
+    # Update with user preferences if provided
+    if preferred_names:
+        std_names.update(preferred_names)
+    
+    # Case 1: Single File
     if input_path.is_file() and input_path.suffix.lower() == '.las':
-        df = _read_single_las(input_path, verbose)
+        df = _read_single_las(input_path, verbose, std_names)
         return df if df is not None else None
     
-    # Directory: all LAS → {filename: df}
+    # Case 2: Directory (Recursive)
     las_files = list(input_path.rglob("*.las"))
     if not las_files:
         if verbose:
-            print("No LAS files.")
+            print(f"No LAS files found in {input_path}")
         return {}
     
     las_dict = {}
     for las_file in las_files:
-        df = _read_single_las(las_file, verbose)
+        df = _read_single_las(las_file, verbose, std_names)
         if df is not None:
-            filename = las_file.name  # Key by filename
+            filename = las_file.name
             las_dict[filename] = df
     
+    # Return single DF if only 1 file found, else dict
     if len(las_dict) == 1:
-        return next(iter(las_dict.values()))  # Single → DF
+        return next(iter(las_dict.values()))
+    
     return las_dict
 
-
-
-
-def _read_single_las(las_file_path, verbose):
-    """Read single LAS file to DataFrame"""
+def _read_single_las(las_file_path, verbose, std_names):
+    """Read single LAS file to DataFrame and standardize ALL curves."""
     try:
         las_data = lasio.read(las_file_path)
         df = las_data.df()
+        
         if df is None or df.empty:
             if verbose:
                 print(f"✗ Empty DataFrame: {las_file_path.name}")
             return None
             
+        # Ensure index is depth (float)
         df.index = df.index.astype(float)
-#        df.dropna(inplace=True)
         
-        # Standardize GR curve
-        _standardize_gr_curve(las_data, df)
+        # Standardize ALL curves (GR, RHOB, NPHI, etc.)
+        _standardize_all_curves(las_data, df, std_names)
         
         if verbose:
             print(f"✓ {las_file_path.name}")
@@ -165,7 +141,6 @@ def _read_single_las(las_file_path, verbose):
             print(f"✗ Error in {las_file_path.name}: {type(e).__name__}: {e}")
     return None
 
-
 def _get_well_name(las_file_path):
     """Extract well name from LAS file"""
     try:
@@ -174,13 +149,46 @@ def _get_well_name(las_file_path):
     except:
         return las_file_path.stem
 
+def _standardize_all_curves(las_data, df, std_names):
+    """
+    Rename ALL curves in the DataFrame to standard abbreviations 
+    based on the mnemonic dictionary.
+    """
+    # 1. Get the dictionary of aliases
+    mnem_dict = create_mnemonic_dict(
+        gamma_names, sp_names, caliper_names, deepres_names, rxo_names,
+        density_names, density_correction_names, neutron_names, 
+        dtc_names, dts_names, pe_names
+    )
+    
+    # 2. Track which columns we've already renamed to avoid duplicates
+    renamed = set()
 
-def _standardize_gr_curve(las_data, df):
-    """Rename gamma ray curve to GR"""
-    global gamma_names  # Assuming gamma_names defined elsewhere
-    for curve in las_data.curves:
-        if curve.mnemonic.lower() in gamma_names:
-            df.rename(columns={curve.mnemonic: "GR"}, inplace=True)
-            break
-
+    # 3. For each curve type, find all aliases in the file
+    for curve_type, aliases in mnem_dict.items():
+        # Find all matching columns in df
+        matching = [col for col in df.columns if col.lower() in [a.lower() for a in aliases]]
+        
+        if not matching:
+            continue
+        
+        # Use standard name if provided, otherwise use curve_type.upper()
+        target_name = std_names.get(curve_type, curve_type.upper())
+        
+        # If a preferred original column is specified, use it
+        preferred_original = std_names.get(f"{curve_type}_preferred_original")
+        
+        if preferred_original and preferred_original in matching:
+            # Rename preferred original to target_name
+            df.rename(columns={preferred_original: target_name}, inplace=True)
+            renamed.add(target_name)
+        else:
+            # Otherwise, pick the first matching alias
+            df.rename(columns={matching[0]: target_name}, inplace=True)
+            renamed.add(target_name)
+        
+        # Remove all other matching columns
+        for col in matching:
+            if col != target_name and col in df.columns:
+                df.drop(columns=[col], inplace=True)
 
