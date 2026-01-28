@@ -22,16 +22,6 @@
 pip install lasmnemonicsid
 ```
 
-## 🚀 QuickStart
-
-```python
-from LASMnemonicsID.LAS import parseLAS
-
-# Load LAS file
-df = parseLAS("your_well.las")
-print(df.head())
-```
-
 ## 🧪 Test with your Data: Multiple files will load into a dictionary 
 
 ```python
@@ -78,7 +68,7 @@ If you use `LASMnemonicsID` in your research or project, please cite it as follo
 
 **APA**
 
-> Nobleza Energy. (2025). LASMnemonicsID: Well log mnemonic identification using lasio and dlisio [Software]. GitHub. https://github.com/Nobleza-Energy/LASMnemonicsID
+> Nobleza Energy. (2026). LASMnemonicsID: Well log mnemonic identification using lasio and dlisio [Software]. GitHub. https://github.com/Nobleza-Energy/LASMnemonicsID
 
 **BibTeX**
 
@@ -86,7 +76,7 @@ If you use `LASMnemonicsID` in your research or project, please cite it as follo
 @software{LASMnemonicsID,
   author = {Nobleza Energy},
   title = {LASMnemonicsID: Well log mnemonic identification using lasio and dlisio},
-  year = {2025},
+  year = {2026},
   publisher = {GitHub},
   journal = {GitHub repository},
   url = {https://github.com/Nobleza-Energy/LASMnemonicsID}
