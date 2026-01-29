@@ -2,10 +2,10 @@
   <img src="https://raw.githubusercontent.com/Nobleza-Energy/LASMnemonicsID/main/logo.png" alt="LASMnemonicsID Logo" width="200"/>
 </p>
 
-<h1 align="center">LASMnemonicsID</h1>
+<h1 align="center">LASMnemonicsID©</h1>
 
 <p align="center">
-  <b>Well log mnemonic identification using lasio and dlisio</b>
+  <b>Well log mnemonic identification using lasio, dlisio, pandas and custom oil and gas mnemonics for triple combo</b>
 </p>
 
 <p align="center">
@@ -22,28 +22,39 @@
 pip install lasmnemonicsid
 ```
 
-## 🚀 QuickStart
-
-```python
-from LASMnemonicsID.LAS import parseLAS
-
-# Load LAS file
-df = parseLAS("your_well.las")
-print(df.head())
-```
-
 ## 🧪 Test with your Data: Multiple files will load into a dictionary 
 
 ```python
-from LASMnemonicsID.LAS import parseLAS
 
-# Load all .las within the Directory → {filename: df}
-data = parseLAS("/path/to/your/data/")
+# define path of directory containing .las files, if multiple
+dir = "/home/path/dir/"
+
+# Parse all LAS files in a directory to be stored as dataframes within the data dictionary
+data = parseLAS(dir, preferred_names=preferred)
+
+# List all files names, as they are stored as the dictionary keys
 print("Files:", list(data.keys()))
 
+# Access a specific file's DataFrame head
+for fname, df in data.items():
+    print(f"\n{fname}:")
+    print(df.columns.tolist())
+    print(df.head(3))
+
 # Dataframes
-df = parseLAS('/path/to/yourfile.las')
-print(df.head())
+# define the path where your .las file is
+path = 'path to file/file.las'
+
+# you can optionally use preferred names for the standard mnemonic automatic match, in this case AT90, if present, will be renamed as the deep resistivity standard curve name "RT" (column name of the dataframe)
+preferred = {
+    "deepres_preferred_original": "AT90",
+    "gamma": "GR"
+}
+
+# Parse a single LAS file
+df = parseLAS(path, preferred_names=preferred)
+# View the standardized/renamed columns
+print(df_new.columns)
 ```
 
 ## 📈 Star History
@@ -57,7 +68,7 @@ If you use `LASMnemonicsID` in your research or project, please cite it as follo
 
 **APA**
 
-> Nobleza Energy. (2025). LASMnemonicsID: Well log mnemonic identification using lasio and dlisio [Software]. GitHub. https://github.com/Nobleza-Energy/LASMnemonicsID
+> Nobleza Energy. (2026). LASMnemonicsID: Well log mnemonic identification using lasio and dlisio [Software]. GitHub. https://github.com/Nobleza-Energy/LASMnemonicsID
 
 **BibTeX**
 
@@ -65,7 +76,7 @@ If you use `LASMnemonicsID` in your research or project, please cite it as follo
 @software{LASMnemonicsID,
   author = {Nobleza Energy},
   title = {LASMnemonicsID: Well log mnemonic identification using lasio and dlisio},
-  year = {2025},
+  year = {2026},
   publisher = {GitHub},
   journal = {GitHub repository},
   url = {https://github.com/Nobleza-Energy/LASMnemonicsID}
