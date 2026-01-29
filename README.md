@@ -1,7 +1,8 @@
-<p align="center">
-  <img src="https://raw.githubusercontent.com/Nobleza-Energy/LASMnemonicsID/main/logo.png" alt="LASMnemonicsID Logo" width="200"/>
-</p>
 
+<h1 align="center">LASMnemonicsID©</h1>
+<p align="center">
+  <img src="https://github.com/Nobleza-Energy/LASMnemonicsID/blob/e44bfb606fef5cfc9c3df6e41c3d1bd0d7bb08ae/logo.png?raw=true" alt="LASMnemonicsID Logo" width="200"/>
+</p>
 <h1 align="center">LASMnemonicsID©</h1>
 
 <p align="center">
