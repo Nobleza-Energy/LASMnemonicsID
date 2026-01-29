@@ -22,7 +22,7 @@
 pip install lasmnemonicsid
 ```
 
-## 🧪 Test with your Data: Multiple files will load into a dictionary 
+## 🧪 Test with your Data using the load.ipynb notebook or copying 👇 
 
 ```python
 
