@@ -34,8 +34,13 @@ theme:
     - content.action.edit
     - content.action.view
 
+
+
 plugins:
   - search
+  - gen-files:
+      scripts:
+        - docs/gen_ref_pages.py
   - mkdocstrings:
       default_handler: python
       handlers:
