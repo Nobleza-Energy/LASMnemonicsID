@@ -125,17 +125,22 @@ all_data = {**las_data, **dlis_data, **ascii_data}
 
 ## Supported Mnemonics
 
-| Curve Type | Standard Name | Common Aliases |
-|------------|---------------|----------------|
-| Gamma Ray | GR | GAMMA, GRD, GRC |
-| Deep Resistivity | RT | AT90, ILD, LLD |
-| Shallow Resistivity | RXO | RFOC, LLS |
-| Density | RHOB | DENS, DEN |
-| Neutron Porosity | NPHI | NPOR, NEU |
-| Sonic | DT | DTC, AC |
-| Spontaneous Potential | SP | SPT |
-| Caliper | CALI | CAL |
-| Photoelectric | PEF | PE |
+The package automatically standardizes these curve types:
+
+| Curve Type | Standard Name | Example Aliases |
+|------------|---------------|-------------|
+| Gamma Ray | `GR` | gr, cggr, cgr, gam, gamma, gammaray, grc, grd, hgr, sgr, lgr, pgr |
+| Spontaneous Potential | `SP` | sp, idsp, spr, spl, spdl, spdhp, spc, sp0, sp1, cgsp, dlsp |
+| Caliper | `CALI` | caliper, calip, cal, dcal, acal, cala, cald, cale, calh, hcal, xcal, ycal |
+| Deep Resistivity | `RT` | rt, rtao, rt90, ild, idph, rild, rd, ae90, at90, atrt, lld, lldc, res, resd |
+| Shallow Resistivity | `RXO` | rxo, rxoz, msfl, mcfl, sflcc, mgl, m1rx, r40o, aht10 |
+| Density | `RHOB` | rhob, rhoz, den, denb, denc, hrho, hrhob, zden, hden, denf, denn |
+| Density Correction | `DRHO` | dcor, dcorr, dc, decr, drh, zcor, zcorr, hhdr, denscorr |
+| Neutron Porosity | `NPHI` | cn, phin, cnc, cns, hnphi, nphi, npor, cncc, nprl, neut, neutpor |
+| Sonic (Compressional) | `DT` | dt, dtc, dtco, dtcomp, deltat, slow, slowness, tt, ac, acco, delt, dtcomp |
+| Sonic (Shear) | `DTS` | dts, dtsh, dtsm, dtsc, dtsd, dtsqi, dtshear, deltas, tts, stt, dtshear |
+| Photoelectric Factor | `PEF` | pe, pef, pefz, pdpe, pedf, pedn, hpedn, pe2, pef8, lpe |
+
 
 ---
 
