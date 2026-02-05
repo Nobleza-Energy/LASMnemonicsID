@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "lasmnemonicsid"
-version = "0.0.4"  
-description = "Well log mnemonic identification using lasio and dlisio to load LAS/DLIS files into DataFrames"
+version = "0.0.5"  
+description = "Well log mnemonic identification using lasio and dlisio to load LAS/DLIS/ASCII files into DataFrames"
 readme = "README.md"
 authors = [
     {name = "Nobleza Energy", email = "info@nobleza-energy.com"}

@@ -3,7 +3,7 @@ import pytest
 import pandas as pd
 import sys
 from pathlib import Path
-from LASMnemonicsID.ASCII import parseASCII
+from LASMnemonicsID.DLIS import parseDLIS
 from LASMnemonicsID.utils.mnemonics import (
     gamma_names, density_names, neutron_names, 
     dtc_names, sp_names, caliper_names
@@ -17,20 +17,20 @@ def print_output(msg):
     sys.stderr.flush()
 
 
-def test_parseASCII_single_folder():
+def test_parseDLIS_single_folder():
     """Test directory → {filename: df} dict."""
     data_dir = Path(__file__).parent / 'data'
-    result = parseASCII(data_dir, verbose=False)
+    result = parseDLIS(data_dir, verbose=False)
     
     if not result:
-        pytest.skip("No ASCII/CSV test files found")
+        pytest.skip("No DLIS test files found")
     
     assert isinstance(result, dict)
     assert len(result) >= 1
     
     # Print heads of all DataFrames
     print_output("\n" + "="*60)
-    print_output("test_parseASCII_single_folder - Multiple files:")
+    print_output("test_parseDLIS_single_folder - Multiple files:")
     print_output("="*60)
     for filename, df in result.items():
         print_output(f"\n📄 {filename}")
@@ -44,108 +44,60 @@ def test_parseASCII_single_folder():
     assert first_df.index.name == "DEPTH"
 
 
-def test_parseASCII_empty_dir():
+def test_parseDLIS_empty_dir():
     """Test empty directory returns empty dict."""
     empty_path = Path(__file__).parent / 'empty_dir'
     empty_path.mkdir(exist_ok=True)
-    result = parseASCII(empty_path, verbose=False)
+    result = parseDLIS(empty_path, verbose=False)
     assert result == {}
     print_output("\n✓ Empty directory test passed (no DataFrames to show)")
     empty_path.rmdir()
 
 
-def test_parseASCII_single_file():
+def test_parseDLIS_single_file():
     """Test single file → DataFrame."""
     data_dir = Path(__file__).parent / 'data'
-    sample_csv_paths = [f for f in data_dir.glob('*') if f.suffix.lower() in ['.csv', '.txt', '.asc']]
+    sample_dlis_paths = [f for f in data_dir.glob('*') if f.suffix.lower() == '.dlis']
     
-    if not sample_csv_paths:
-        pytest.skip("No ASCII/CSV test files found")
+    if not sample_dlis_paths:
+        pytest.skip("No DLIS test files found")
     
-    first_file = sample_csv_paths[0]
-    df = parseASCII(first_file, verbose=False)
+    first_file = sample_dlis_paths[0]
+    df = parseDLIS(first_file, verbose=False)
     
     # Print DataFrame head
     print_output("\n" + "="*60)
-    print_output(f"test_parseASCII_single_file - {first_file.name}")
+    print_output(f"test_parseDLIS_single_file - {first_file.name}")
     print_output("="*60)
+    print_output(f"File type: {first_file.suffix}")
     print_output(f"Shape: {df.shape}")
     print_output(f"Index: {df.index.name}")
     print_output(f"Columns: {list(df.columns)}")
     print_output("\nFirst 5 rows:")
     print_output(df.head().to_string())
-    print_output("\nDataFrame info:")
-    buffer = []
-    df.info(buf=lambda x: buffer.append(x))
-    print_output(''.join(buffer))
+    print_output("\nDataFrame dtypes:")
+    print_output(str(df.dtypes))
     
     assert isinstance(df, pd.DataFrame)
     assert len(df) > 0
     assert df.index.name == "DEPTH"
+    assert len(df.columns) > 0
 
 
-def test_parseASCII_custom_depth_col():
-    """Test custom depth column name."""
-    data_dir = Path(__file__).parent / 'data'
-    sample_csv_paths = [f for f in data_dir.glob('*') if f.suffix.lower() == '.csv']
-    
-    if not sample_csv_paths:
-        pytest.skip("No CSV test files found")
-    
-    first_file = sample_csv_paths[0]
-    df = parseASCII(first_file, verbose=False, depth_col="DEPTH")
-    
-    # Print with custom depth
-    print_output("\n" + "="*60)
-    print_output(f"test_parseASCII_custom_depth_col - {first_file.name}")
-    print_output("="*60)
-    print_output(f"Depth column: {df.index.name}")
-    print_output(f"Columns: {list(df.columns)}")
-    print_output("\nFirst 5 rows:")
-    print_output(df.head().to_string())
-    
-    assert isinstance(df, pd.DataFrame)
-    assert df.index.name == "DEPTH"
-
-
-def test_parseASCII_delimiter():
-    """Test custom delimiter (tab-separated)."""
-    data_dir = Path(__file__).parent / 'data'
-    sample_txt_paths = [f for f in data_dir.glob('*') if f.suffix.lower() == '.txt']
-    
-    if not sample_txt_paths:
-        pytest.skip("No TXT test files found")
-    
-    first_file = sample_txt_paths[0]
-    df = parseASCII(first_file, verbose=False, delimiter=",")
-    
-    # Print delimiter test
-    print_output("\n" + "="*60)
-    print_output(f"test_parseASCII_delimiter - {first_file.name}")
-    print_output("="*60)
-    print_output(f"Delimiter: comma")
-    print_output(f"Shape: {df.shape}")
-    print_output(f"Columns: {list(df.columns)}")
-    print_output("\nFirst 5 rows:")
-    print_output(df.head().to_string())
-    
-    assert isinstance(df, pd.DataFrame)
-
-
-def test_parseASCII_standardization():
+def test_parseDLIS_standardization():
     """Test that mnemonics are standardized."""
     data_dir = Path(__file__).parent / 'data'
-    sample_csv_paths = [f for f in data_dir.glob('*') if f.suffix.lower() in ['.csv', '.txt', '.asc']]
+    sample_dlis_paths = [f for f in data_dir.glob('*') if f.suffix.lower() == '.dlis']
     
-    if not sample_csv_paths:
-        pytest.skip("No ASCII/CSV test files found")
+    if not sample_dlis_paths:
+        pytest.skip("No DLIS test files found")
     
-    first_file = sample_csv_paths[0]
-    df = parseASCII(first_file, verbose=False)
+    first_file = sample_dlis_paths[0]
+    df = parseDLIS(first_file, verbose=False)
     
     # Print standardized columns
     print_output("\n" + "="*60)
-    print_output(f"test_parseASCII_standardization - {first_file.name}")
+    print_output(f"test_parseDLIS_standardization - {first_file.name}")
     print_output("="*60)
     print_output(f"Standardized columns: {list(df.columns)}")
     
@@ -159,21 +111,21 @@ def test_parseASCII_standardization():
     assert len(found_standards) >= 0
 
 
-def test_parseASCII_preferred_names():
+def test_parseDLIS_preferred_names():
     """Test preferred names override defaults."""
     data_dir = Path(__file__).parent / 'data'
-    sample_csv_paths = [f for f in data_dir.glob('*') if f.suffix.lower() in ['.csv', '.txt', '.asc']]
+    sample_dlis_paths = [f for f in data_dir.glob('*') if f.suffix.lower() == '.dlis']
     
-    if not sample_csv_paths:
-        pytest.skip("No ASCII/CSV test files found")
+    if not sample_dlis_paths:
+        pytest.skip("No DLIS test files found")
     
-    first_file = sample_csv_paths[0]
+    first_file = sample_dlis_paths[0]
     preferred = {"gamma": "GAMMA_RAY", "density": "BULK_DENSITY"}
-    df = parseASCII(first_file, verbose=False, preferred_names=preferred)
+    df = parseDLIS(first_file, verbose=False, preferred_names=preferred)
     
     # Print with preferred names
     print_output("\n" + "="*60)
-    print_output(f"test_parseASCII_preferred_names - {first_file.name}")
+    print_output(f"test_parseDLIS_preferred_names - {first_file.name}")
     print_output("="*60)
     print_output(f"Preferred names applied: {preferred}")
     print_output(f"Result columns: {list(df.columns)}")
@@ -181,3 +133,29 @@ def test_parseASCII_preferred_names():
     print_output(df.head().to_string())
     
     assert isinstance(df, pd.DataFrame)
+    assert df.index.name == "DEPTH"
+
+
+def test_parseDLIS_multiple_frames():
+    """Test DLIS file with multiple frames (uses first frame)."""
+    data_dir = Path(__file__).parent / 'data'
+    sample_dlis_paths = [f for f in data_dir.glob('*') if f.suffix.lower() == '.dlis']
+    
+    if not sample_dlis_paths:
+        pytest.skip("No DLIS test files found")
+    
+    first_file = sample_dlis_paths[0]
+    df = parseDLIS(first_file, verbose=False)
+    
+    # Print frame info
+    print_output("\n" + "="*60)
+    print_output(f"test_parseDLIS_multiple_frames - {first_file.name}")
+    print_output("="*60)
+    print_output(f"Using first frame")
+    print_output(f"Shape: {df.shape}")
+    print_output(f"Columns: {list(df.columns)}")
+    print_output("\nFirst 5 rows:")
+    print_output(df.head().to_string())
+    
+    assert isinstance(df, pd.DataFrame)
+    assert len(df) > 0
