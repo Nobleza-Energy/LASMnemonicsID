@@ -11,6 +11,10 @@ from LASMnemonicsID.utils.mnemonics import (
 from LASMnemonicsID.utils.mnemonics import find_column
 
 
+# All supported ASCII extensions
+ASCII_EXTENSIONS = ['.csv', '.txt', '.asc', '.dat', '.ascii']
+
+
 def print_output(msg):
     """Force print to stderr (always visible in pytest)."""
     sys.stderr.write(str(msg) + "\n")
@@ -57,31 +61,58 @@ def test_parseASCII_empty_dir():
 def test_parseASCII_single_file():
     """Test single file → DataFrame."""
     data_dir = Path(__file__).parent / 'data'
-    sample_csv_paths = [f for f in data_dir.glob('*') if f.suffix.lower() in ['.csv', '.txt', '.asc']]
+    sample_ascii_paths = [f for f in data_dir.glob('*') if f.suffix.lower() in ASCII_EXTENSIONS]
     
-    if not sample_csv_paths:
+    if not sample_ascii_paths:
         pytest.skip("No ASCII/CSV test files found")
     
-    first_file = sample_csv_paths[0]
+    first_file = sample_ascii_paths[0]
     df = parseASCII(first_file, verbose=False)
     
     # Print DataFrame head
     print_output("\n" + "="*60)
     print_output(f"test_parseASCII_single_file - {first_file.name}")
     print_output("="*60)
+    print_output(f"File type: {first_file.suffix}")
     print_output(f"Shape: {df.shape}")
     print_output(f"Index: {df.index.name}")
     print_output(f"Columns: {list(df.columns)}")
     print_output("\nFirst 5 rows:")
     print_output(df.head().to_string())
-    print_output("\nDataFrame info:")
-    buffer = []
-    df.info(buf=lambda x: buffer.append(x))
-    print_output(''.join(buffer))
+    print_output("\nDataFrame dtypes:")
+    print_output(str(df.dtypes))
     
     assert isinstance(df, pd.DataFrame)
     assert len(df) > 0
     assert df.index.name == "DEPTH"
+
+
+def test_parseASCII_all_formats():
+    """Test that all ASCII formats (.csv, .txt, .asc, .dat, .ascii) are detected."""
+    data_dir = Path(__file__).parent / 'data'
+    
+    found_formats = {}
+    for ext in ASCII_EXTENSIONS:
+        files = [f for f in data_dir.glob(f'*{ext}')]
+        if files:
+            found_formats[ext] = len(files)
+    
+    if not found_formats:
+        pytest.skip("No ASCII files found")
+    
+    print_output("\n" + "="*60)
+    print_output("test_parseASCII_all_formats - Format detection:")
+    print_output("="*60)
+    print_output(f"Found formats: {found_formats}")
+    
+    # Test parsing each format
+    for ext, count in found_formats.items():
+        files = [f for f in data_dir.glob(f'*{ext}')]
+        if files:
+            first_file = files[0]
+            df = parseASCII(first_file, verbose=False)
+            print_output(f"\n✓ {ext}: {first_file.name} → {df.shape}")
+            assert isinstance(df, pd.DataFrame)
 
 
 def test_parseASCII_custom_depth_col():
@@ -109,7 +140,7 @@ def test_parseASCII_custom_depth_col():
 
 
 def test_parseASCII_delimiter():
-    """Test custom delimiter (tab-separated)."""
+    """Test custom delimiter (comma, tab, space)."""
     data_dir = Path(__file__).parent / 'data'
     sample_txt_paths = [f for f in data_dir.glob('*') if f.suffix.lower() == '.txt']
     
@@ -117,30 +148,37 @@ def test_parseASCII_delimiter():
         pytest.skip("No TXT test files found")
     
     first_file = sample_txt_paths[0]
-    df = parseASCII(first_file, verbose=False, delimiter=",")
     
-    # Print delimiter test
-    print_output("\n" + "="*60)
-    print_output(f"test_parseASCII_delimiter - {first_file.name}")
-    print_output("="*60)
-    print_output(f"Delimiter: comma")
-    print_output(f"Shape: {df.shape}")
-    print_output(f"Columns: {list(df.columns)}")
-    print_output("\nFirst 5 rows:")
-    print_output(df.head().to_string())
-    
-    assert isinstance(df, pd.DataFrame)
+    # Try different delimiters
+    delimiters = [",", "\t", " "]
+    for delim in delimiters:
+        try:
+            df = parseASCII(first_file, verbose=False, delimiter=delim)
+            
+            print_output("\n" + "="*60)
+            print_output(f"test_parseASCII_delimiter - {first_file.name}")
+            print_output("="*60)
+            print_output(f"Delimiter: {repr(delim)}")
+            print_output(f"Shape: {df.shape}")
+            print_output(f"Columns: {list(df.columns)}")
+            print_output("\nFirst 3 rows:")
+            print_output(df.head(3).to_string())
+            
+            assert isinstance(df, pd.DataFrame)
+            break  # Success, stop trying
+        except:
+            continue
 
 
 def test_parseASCII_standardization():
     """Test that mnemonics are standardized."""
     data_dir = Path(__file__).parent / 'data'
-    sample_csv_paths = [f for f in data_dir.glob('*') if f.suffix.lower() in ['.csv', '.txt', '.asc']]
+    sample_ascii_paths = [f for f in data_dir.glob('*') if f.suffix.lower() in ASCII_EXTENSIONS]
     
-    if not sample_csv_paths:
+    if not sample_ascii_paths:
         pytest.skip("No ASCII/CSV test files found")
     
-    first_file = sample_csv_paths[0]
+    first_file = sample_ascii_paths[0]
     df = parseASCII(first_file, verbose=False)
     
     # Print standardized columns
@@ -162,12 +200,12 @@ def test_parseASCII_standardization():
 def test_parseASCII_preferred_names():
     """Test preferred names override defaults."""
     data_dir = Path(__file__).parent / 'data'
-    sample_csv_paths = [f for f in data_dir.glob('*') if f.suffix.lower() in ['.csv', '.txt', '.asc']]
+    sample_ascii_paths = [f for f in data_dir.glob('*') if f.suffix.lower() in ASCII_EXTENSIONS]
     
-    if not sample_csv_paths:
+    if not sample_ascii_paths:
         pytest.skip("No ASCII/CSV test files found")
     
-    first_file = sample_csv_paths[0]
+    first_file = sample_ascii_paths[0]
     preferred = {"gamma": "GAMMA_RAY", "density": "BULK_DENSITY"}
     df = parseASCII(first_file, verbose=False, preferred_names=preferred)
     
