@@ -29,9 +29,9 @@
 
 ## Installation
 
-\`\`\`bash
+```bash
 pip install lasmnemonicsid
-\`\`\`
+```
 
 This installs support for **all formats** (LAS, DLIS, ASCII/CSV/TXT).
 
@@ -41,7 +41,7 @@ This installs support for **all formats** (LAS, DLIS, ASCII/CSV/TXT).
 
 ### LAS Files
 
-\`\`\`python
+```python
 from LASMnemonicsID import parseLAS
 
 # Parse single LAS file
@@ -52,11 +52,11 @@ print(df.head())
 data = parseLAS("/path/to/las/files/")
 for filename, df in data.items():
     print(f"{filename}: {df.shape}")
-\`\`\`
+```
 
 ### DLIS Files
 
-\`\`\`python
+```python
 from LASMnemonicsID import parseDLIS
 
 # Parse single DLIS file
@@ -65,11 +65,11 @@ print(df.columns)
 
 # Parse directory
 data = parseDLIS("/path/to/dlis/files/")
-\`\`\`
+```
 
 ### ASCII/CSV/TXT Files
 
-\`\`\`python
+```python
 from LASMnemonicsID import parseASCII
 
 # Parse CSV
@@ -80,7 +80,7 @@ df = parseASCII("well_log.txt", delimiter="\t")
 
 # Parse directory
 data = parseASCII("/path/to/csv/files/")
-\`\`\`
+```
 
 ---
 
@@ -88,7 +88,7 @@ data = parseASCII("/path/to/csv/files/")
 
 ### Custom Preferred Names
 
-\`\`\`python
+```python
 preferred = {
     "deepres": "RT",
     "deepres_preferred_original": "AT90",
@@ -96,11 +96,11 @@ preferred = {
 }
 
 df = parseLAS("well.las", preferred_names=preferred)
-\`\`\`
+```
 
 ### Batch Processing
 
-\`\`\`python
+```python
 from pathlib import Path
 
 dir_path = Path("/data/wells/")
@@ -109,17 +109,17 @@ data = parseLAS(dir_path, verbose=True, preferred_names=preferred)
 for fname, df in data.items():
     print(f"{fname}: {df.shape}")
     print(df.head(3))
-\`\`\`
+```
 
 ### Mixed Format Directories
 
-\`\`\`python
+```python
 las_data = parseLAS("/data/wells/")
 dlis_data = parseDLIS("/data/wells/")
 ascii_data = parseASCII("/data/wells/")
 
 all_data = {**las_data, **dlis_data, **ascii_data}
-\`\`\`
+```
 
 ---
 
@@ -141,12 +141,12 @@ all_data = {**las_data, **dlis_data, **ascii_data}
 
 ## Testing
 
-\`\`\`bash
+```bash
 pytest tests/ -v
 pytest tests/test_las.py -v
 pytest tests/test_dlis.py -v
 pytest tests/test_ascii.py -v
-\`\`\`
+```
 
 ---
 
@@ -197,7 +197,7 @@ Parse ASCII/CSV/TXT file(s) and standardize mnemonics.
 
 **BibTeX**
 
-\`\`\`bibtex
+```bibtex
 @software{LASMnemonicsID,
   author = {Nobleza Energy},
   title = {LASMnemonicsID: Well log mnemonic identification for LAS, DLIS, and ASCII formats},
@@ -205,7 +205,7 @@ Parse ASCII/CSV/TXT file(s) and standardize mnemonics.
   publisher = {GitHub},
   url = {https://github.com/Nobleza-Energy/LASMnemonicsID}
 }
-\`\`\`
+```
 
 ---
 
